@@ -1,7 +1,7 @@
 // Load all the channels within this directory and all subdirectories.
 // Channel files must be named *_channel.js.
 
-
+const Pokemon_URL="http://localhost:3000/pokemons"
 document.addEventListener('DOMContentLoaded', function() {
 
     
@@ -17,7 +17,7 @@ function startConvo(){
        
         convoElements[count].setAttribute('class', '')
         const convoElement=convoElements[count]
-        setTimeout(()=>hideConvo(convoElement), 1000)
+        setTimeout(()=>hideConvo(convoElement), 3000)
        
     }
     
@@ -59,5 +59,14 @@ function continueConvo(name){
     setTimeout(function(){
         div.setAttribute('class', 'hidden')
     }, 5000)
-    
+
+    fetch(Pokemon_URL)
+    .then(resp => resp.json())
+    .then(json => renderPokemon(json));
+
+}
+
+function renderPokemon(data){
+    console.log(data)
+
 }
