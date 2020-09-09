@@ -40,16 +40,16 @@ function addName(e){
     e.target.setAttribute('class','hidden')
     const trainerName=e.target.querySelector('input[name="name"]').value
 
-    let configObject= {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({"name": trainerName})
-      }
+    // let configObject= {
+    //     method: 'POST',
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "Accept": "application/json"
+    //     },
+    //     body: JSON.stringify({"name": trainerName})
+    //   }
     
-      fetch('http://localhost:3000/trainers', configObject)
+    //   fetch('http://localhost:3000/trainers', configObject)
       
     continueConvo(name)
 }
@@ -60,38 +60,15 @@ function continueConvo(name){
     setTimeout(function(){
         div.setAttribute('class', 'hidden')
 
-        //only here until fetch is working
-        renderPokemon()
+        fetch(Pokemon_URL)
+        .then(resp => resp.json())
+        .then(json => renderPokemon(json));
     }, 5000)
-
-    // fetch(Pokemon_URL)
-    // .then(resp => resp.json())
-    // .then(json => renderPokemon(json));
     
 }
 
-function renderPokemon(){
-    data=[{name: 'squirtle', poke_type: 'water', img: 'pokemon-lite/app/assets/images/squirtle.jpeg'},
-    {name: 'ivysaur', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/ivysaur.jpeg'},
-    {name: 'charizard', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/charizard.jpeg'},
-    {name: 'staryu', poke_type: 'water', img: 'pokemon-lite/app/assets/images/staryu.jpeg'},
-    {name: 'vileplume', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/vileplume.jpeg'},
-    {name: 'vulpix', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/vulpix.jpeg'},
-    {name: 'weepinbell', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/weepinbell.png'},
-    {name: 'rapidash', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/rapidash.png'},
-    {name: 'pikachu', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/pikachu.jpeg'},
-    {name: 'zapdos', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/zapdos.jpeg'},
-    {name: 'magnemite', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/magnemite.jpeg'},
-    {name: 'onix', img: 'pokemon-lite/app/assets/images/onix.jpeg', poke_type: 'rock'},
-    {name: 'hitmonchan', img: 'pokemon-lite/app/assets/images/hitmonlee.png', poke_type: 'fighting'},
-    {name: 'hitmonlee', img: 'pokemon-lite/app/assets/images/hitmonchan.png', poke_type: 'fighting'},
-    {name: 'rhyhorn', img: 'pokemon-lite/app/assets/images/rhyhorn.jpeg', poke_type: 'rock'},
-    {name: 'gastly', img: 'pokemon-lite/app/assets/images/gastly.jpeg', poke_type: 'ghost'},
-    {name: 'gengar', img: 'pokemon-lite/app/assets/images/gengar.jpeg', poke_type: 'ghost'},
-    {name: 'beedrill', img: 'pokemon-lite/app/assets/images/beedrill.jpeg', poke_type: 'bug'},
-    {name: 'butterfree', img: 'pokemon-lite/app/assets/images/butterfree.jpeg', poke_type: 'bug'}
-    
-]
+function renderPokemon(data){
+
     const types=document.querySelectorAll('ul')
     data.forEach((pokemon)=> {
         let li=document.createElement('li')
