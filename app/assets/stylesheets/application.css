@@ -29,23 +29,52 @@
 }
 
 /* Clear floats after the columns */
-.row1:after {
+.row1:after, .row2:after {
   content: "";
   display: table;
   clear: both;
 }
 
-.row2:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 
-ul:before{
+
+.column:before{
   content:attr(aria-label);
   font-size:120%;
   font-weight:bold;
   margin-left:-15px;
 }
+
+button.remove {
+  float: right;
+  background-color: #E1332D;
+}
+button#submit {
+  float: right;
+  background-color: hsl(125, 86%, 46%);
+}
+
+#poke-roster {
+  background-color: #eeeeee;
+  height: 200px;
+  width: 300px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#roster:before{
+  content:attr(aria-label);
+  font-size:120%;
+  font-weight:bold;
+  padding-right: 20px;
+}
+
+ul#roster li {
+  font-size: 1.05em;
+  list-style: none;
+  padding-right: 20px;
+}
+
+
 
 

@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     startConvo()
     document.querySelector('form').addEventListener('submit', addName)
+    document.querySelector('#submit').addEventListener('click', choosePokemonLevels)
 });
 
 function startConvo(){
@@ -71,17 +72,26 @@ function continueConvo(name){
 
 function renderPokemon(){
     data=[{name: 'squirtle', poke_type: 'water', img: 'pokemon-lite/app/assets/images/squirtle.jpeg'},
-        {name: 'ivysaur', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/ivysaur.jpeg'},
-        {name: 'charizard', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/charizard.jpeg'},
-        {name: 'staryu', poke_type: 'water', img: 'pokemon-lite/app/assets/images/staryu.jpeg'},
-        {name: 'vileplume', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/vileplume.jpeg'},
-        {name: 'vulpix', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/vulpix.jpeg'},
-        {name: 'weepinbell', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/weepinbell.png'},
-        {name: 'rapidash', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/rapidash.png'},
-        {name: 'pikachu', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/pikachu.jpeg'},
-        {name: 'zapdos', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/zapdos.jpeg'},
-        {name: 'magnemite', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/magnemite.jpeg'}
-        ]
+    {name: 'ivysaur', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/ivysaur.jpeg'},
+    {name: 'charizard', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/charizard.jpeg'},
+    {name: 'staryu', poke_type: 'water', img: 'pokemon-lite/app/assets/images/staryu.jpeg'},
+    {name: 'vileplume', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/vileplume.jpeg'},
+    {name: 'vulpix', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/vulpix.jpeg'},
+    {name: 'weepinbell', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/weepinbell.png'},
+    {name: 'rapidash', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/rapidash.png'},
+    {name: 'pikachu', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/pikachu.jpeg'},
+    {name: 'zapdos', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/zapdos.jpeg'},
+    {name: 'magnemite', poke_type: 'electric', img: 'pokemon-lite/app/assets/images/magnemite.jpeg'},
+    {name: 'onix', img: 'pokemon-lite/app/assets/images/onix.jpeg', poke_type: 'rock'},
+    {name: 'hitmonchan', img: 'pokemon-lite/app/assets/images/hitmonlee.png', poke_type: 'fighting'},
+    {name: 'hitmonlee', img: 'pokemon-lite/app/assets/images/hitmonchan.png', poke_type: 'fighting'},
+    {name: 'rhyhorn', img: 'pokemon-lite/app/assets/images/rhyhorn.jpeg', poke_type: 'rock'},
+    {name: 'gastly', img: 'pokemon-lite/app/assets/images/gastly.jpeg', poke_type: 'ghost'},
+    {name: 'gengar', img: 'pokemon-lite/app/assets/images/gengar.jpeg', poke_type: 'ghost'},
+    {name: 'beedrill', img: 'pokemon-lite/app/assets/images/beedrill.jpeg', poke_type: 'bug'},
+    {name: 'butterfree', img: 'pokemon-lite/app/assets/images/butterfree.jpeg', poke_type: 'bug'}
+    
+]
     const types=document.querySelectorAll('ul')
     data.forEach((pokemon)=> {
         let li=document.createElement('li')
@@ -94,13 +104,48 @@ function renderPokemon(){
                 type.append(li)
             }
         })
-        li.addEventListener('click', addPokemon)
+        li.addEventListener('click', addPokemonToRoster)
     })
     let div=document.querySelector('.pokemon')
     div.setAttribute('class', '')
 
 }
 
-function addPokemon(e){
-    console.log(e.target)
+function addPokemonToRoster(e){
+    let pokemonElement=e.target
+    const ul=document.querySelector('#roster')
+    //Ensure that you cant add more than 6 pokemmon
+    if (ul.children.length<6){
+        let li=document.createElement('li')
+        li.innerText=pokemonElement.innerText 
+        li.setAttribute('type', `${pokemonElement.getAttribute('type')}`)
+        li.setAttribute('pic', `${pokemonElement.getAttribute('pic')}`)
+        let deleteButton=document.createElement('button')
+        deleteButton.setAttribute('class', 'remove')
+        deleteButton.innerText='remove'
+        deleteButton.addEventListener('click', removePokemonFromRoster)
+        li.append(deleteButton)
+        ul.append(li)
+       
+    }
+    document.querySelector('#poke-roster').setAttribute('class', '')
+    
+}
+
+function removePokemonFromRoster(e){
+    e.target.parentElement.remove()
+}
+
+function choosePokemonLevels(e){
+    const roster=e.target.parentElement.querySelectorAll('li')
+    document.querySelector('#all-pokemon').setAttribute('class', 'pokemon')
+    document.querySelector('#poke-roster').setAttribute('class', 'hidden')
+    choosePokemonConvo()
+}
+
+function choosePokemonConvo(){
+    const main=document.querySelector('main')
+    const div=document.createElement('div')
+
+
 }
