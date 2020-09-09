@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2020_09_04_170209) do
     t.string "img"
     t.integer "life"
     t.integer "level"
-    t.string "poke_type"
+    t.string "type"
     t.integer "trainer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
