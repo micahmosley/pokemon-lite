@@ -5,7 +5,8 @@ class CreatePokemons < ActiveRecord::Migration[6.0]
       t.string :img
       t.integer :life
       t.integer :level
-      t.string :poke_type
+      #changed to match schema
+      t.string :type
       t.integer :trainer_id
 
       t.timestamps

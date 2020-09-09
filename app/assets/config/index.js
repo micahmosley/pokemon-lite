@@ -37,18 +37,18 @@ function showForm(){
 function addName(e){
     e.preventDefault()
     e.target.setAttribute('class','hidden')
-    const name=e.target.querySelector('input[name="name"]').value
+    const trainerName=e.target.querySelector('input[name="name"]').value
 
-    // let configObject= {
-    //     method: 'PATCH',
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "Accept": "application/json"
-    //     },
-    //     body: JSON.stringify(name: name)
-    //   }
+    let configObject= {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({"name": trainerName})
+      }
     
-    //   fetch('http://localhost:3000/trainers', configObject)
+      fetch('http://localhost:3000/trainers', configObject)
       
     continueConvo(name)
 }
