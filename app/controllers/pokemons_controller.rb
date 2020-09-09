@@ -1,6 +1,6 @@
 class PokemonsController < ApplicationController
     
-    def index
+    def data
         pokemon=[{name: 'squirtle', poke_type: 'water', img: 'pokemon-lite/app/assets/images/squirtle.jpeg'},
         {name: 'ivysaur', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/ivysaur.jpeg'},
         {name: 'charizard', poke_type: 'fire', img: 'pokemon-lite/app/assets/images/charizard.jpeg'},
@@ -22,7 +22,11 @@ class PokemonsController < ApplicationController
         {name: 'butterfree', img: 'pokemon-lite/app/assets/images/butterfree.jpeg', poke_type: 'bug'}
         
     ]
+        render json: pokemon
+    end 
 
+    def index 
+        pokemon=Pokemon.all
 
         render json: pokemon
     end 
