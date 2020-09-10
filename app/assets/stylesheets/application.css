@@ -35,6 +35,7 @@ h2{
  #oak {
     height: 200px;
     width: 200px;
+    mix-blend-mode: multiply;
   }
 
   .hidden, .pokemon {
@@ -92,19 +93,19 @@ button#submit {
 #part1{
   background-color: #7bcf66;
   height: 200px;
-  width: 300px;
+  width: 800px;
   box-shadow: 10px 10px grey;
   padding: 10px;
   border-radius: 30px;
 }
-#part2{
+/* #part2{
   background-color: #7bcf66;
   height: 200px;
   width: 300px;
   box-shadow: 10px 10px grey;
   padding: 10px;
   border-radius: 30px;
-}
+} */
 /* #convo{
   background-color: #7bcf66;
   height: 200px;
@@ -179,7 +180,7 @@ ul#electric{
 }
 
 ul#rock{
-  background-color: grey;
+  background-color: rgb(175, 174, 174);
   box-shadow: 10px 10px grey;
   padding: 25px;
   border-radius: 30px;
@@ -223,3 +224,27 @@ ul#bug{
   margin-top: 25px;
   justify-content: flex-end;
   width: 350px;
+}
+
+img{
+mix-blend-mode: multiply;
+}
+
+
+#convo > p{
+  background-color: #7bcf66;
+  height: 200px;
+  width: 600px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+#text-info > p{
+  background-color: #7bcf66;
+  height: 150px;
+  width: 600px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+}
