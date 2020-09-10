@@ -72,11 +72,11 @@ function continueConvo(data){
 }
 
 function renderPokemon(data, trainerId){
-    console.log(trainerId)
     const types=document.querySelectorAll('ul')
     data.forEach((pokemon)=> {
         let li=document.createElement('li')
         li.innerText=pokemon.name
+        li.setAttribute('trainer-id', trainerId)
         li.setAttribute('type', pokemon.poke_type)
         li.setAttribute('pic', pokemon.img)
         types.forEach((type)=>{
@@ -101,6 +101,7 @@ function addPokemonToRoster(e){
         li.innerText=pokemonElement.innerText 
         li.setAttribute('type', `${pokemonElement.getAttribute('type')}`)
         li.setAttribute('pic', `${pokemonElement.getAttribute('pic')}`)
+        li.setAttribute('trainer-id', `${pokemonElement.getAttribute('trainer-id')}`)
         let deleteButton=document.createElement('button')
         deleteButton.setAttribute('class', 'remove')
         deleteButton.innerText='remove'
@@ -119,25 +120,46 @@ function createPokemonInBackend(e){
     roster.forEach((pokemon)=> {
         const type=pokemon.getAttribute('type')
         const pic=pokemon.getAttribute('pic')
-        const name=pokemon.innerText
+        let name=pokemon.innerText
+        name=name.slice(0,-7)
+        const trainerId=pokemon.getAttribute('trainer-id')
+        let data={name: name, img: pic, level: 1, poke_type: type, trainer_id: parseInt(trainerId)}
+
+        let configObject= {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify(data)
+          }
+        
+        fetch('http://localhost:3000/pokemons', configObject)
+        .then(resp => resp.json())
+        .then(json => addPokemonIdToPokemon(json, pokemon));               
     })
 
-    choosePokemonLevels(e)
+    startChoosePokemonLevelsProcess(e)
+}
+
+function addPokemonIdToPokemon(data, pokemonElement){
+    const id=data.id 
+    pokemonElement.setAttribute('pokemon-id', id)
 }
 
 function removePokemonFromRoster(e){
     e.target.parentElement.remove()
 }
 
-function choosePokemonLevels(e){
+function startChoosePokemonLevelsProcess(e){
     const roster=e.target.parentElement.querySelectorAll('li')
     document.querySelector('#all-pokemon').setAttribute('class', 'pokemon')
     document.querySelector('#poke-roster').setAttribute('class', 'hidden')
-    choosePokemonConvo()
+    choosePokemonConvo(e)
 
 }
 
-function choosePokemonConvo(){
+function choosePokemonConvo(e){
     const main=document.querySelector('main')
     const div=document.createElement('div')
     div.innerHTML=`<p>Now, let's get these pokemon trained up! Choose the level you want for each pokemon! Be careful the total level of all your pokemon is capped at 300.</p>`
@@ -145,6 +167,67 @@ function choosePokemonConvo(){
 
     setTimeout(function(){
         div.setAttribute('class', 'hidden')
+        choosePokemonLevels(e)
     }, 9000)
 
+}
+
+function choosePokemonLevels(e){
+    const pokemonElements=e.target.parentElement.querySelectorAll('li')
+    let levelTotal=pokemonElements.length
+    let div=document.querySelector('#choose-pokemon-levels')
+    let h3=document.createElement('h3')
+    let remainingLevels=300-levelTotal
+    h3.setAttribute('id', 'remaining-levels')
+    h3.innerHTML=`Remaining levels yet to be alloted: <span>${remainingLevels}</span>`
+    div.append(h3)
+    pokemonElements.forEach((pokemon)=>{
+        let innerDiv=document.createElement('div')
+        innerDiv.setAttribute('pokemon-id', pokemon.getAttribute('pokemon-id'))
+        let img=document.createElement('img')
+        img.setAttribute('src', pokemon.getAttribute('pic'))
+        innerDiv.append(img)
+        let name=pokemon.innerText
+        name=name.slice(0,-6)
+        let p=document.createElement('p')
+        p.innerText=`What level would you like your ${name} to be?`
+        innerDiv.append(p)
+        let form=document.createElement('form')
+        form.innerHTML=`<input
+        type="text"
+        name="level"
+        value=""
+        placeholder="Enter Level"
+        
+        />
+
+        <input
+            type="submit"
+            name="submit"
+            value="Enter"
+            class="submit"
+        />`
+        form.addEventListener('submit', addLevelToPokemon)
+
+
+        innerDiv.append(form)
+
+        div.append(innerDiv)
+
+        
+    })
+}
+
+function addLevelToPokemon(e){
+    e.preventDefault()
+    let remainingLevels=parseInt(document.querySelector('#remaining-levels span').innerText)
+    const level= e.target.querySelector('input[type="text"]').value 
+    const id=e.target.parentElement.getAttribute('pokemon-id')
+    //If the user's level input was valid
+    if ((remainingLevels-level)>=0 && level<100){
+        document.querySelector('#remaining-levels span').innerText=remainingLevels-level
+        e.target.parentElement.setAttribute('class', 'hidden')
+    }
+    
+    //Add fetch to do a patch to pokemon to add level
 }

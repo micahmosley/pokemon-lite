@@ -1,5 +1,5 @@
 class PokemonsController < ApplicationController
-    
+    skip_before_action :verify_authenticity_token
     def data
         pokemon=[{name: 'squirtle', poke_type: 'water', img: 'pokemon-lite/app/assets/images/squirtle.jpeg'},
         {name: 'ivysaur', poke_type: 'grass', img: 'pokemon-lite/app/assets/images/ivysaur.jpeg'},
@@ -27,6 +27,12 @@ class PokemonsController < ApplicationController
 
     def index 
         pokemon=Pokemon.all
+
+        render json: pokemon
+    end 
+
+    def create 
+        pokemon=Pokemon.create(name: params["name"], img: params["img"], level: params["level"], poke_type: params["poke_type"], trainer_id: params["trainer_id"])
 
         render json: pokemon
     end 
