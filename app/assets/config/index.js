@@ -101,7 +101,7 @@ function addPokemonToRoster(e){
     if (ul.children.length<6){
         let li=document.createElement('li')
         // changed this to include the name
-        li.innerText=pokemonElement.parentElement.innerText
+        li.innerText=pokemonElement.innerText
         li.setAttribute('type', `${pokemonElement.getAttribute('type')}`)
         li.setAttribute('pic', `${pokemonElement.getAttribute('pic')}`)
         li.setAttribute('trainer-id', `${pokemonElement.getAttribute('trainer-id')}`)
