@@ -118,6 +118,7 @@ function addPokemonToRoster(e){
 function createPokemonInBackend(e){
 
     const roster=e.target.parentElement.querySelectorAll('li')
+    let dataArray=[]
     roster.forEach((pokemon)=> {
         const type=pokemon.getAttribute('type')
         const pic=pokemon.getAttribute('pic')
@@ -125,27 +126,34 @@ function createPokemonInBackend(e){
         name=name.slice(0,-7)
         const trainerId=pokemon.getAttribute('trainer-id')
         let data={name: name, img: pic, level: 1, poke_type: type, trainer_id: parseInt(trainerId)}
-
-        let configObject= {
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-            },
-            body: JSON.stringify(data)
-          }
-        
-        fetch('http://localhost:3000/pokemons', configObject)
-        .then(resp => resp.json())
-        .then(json => addPokemonIdToPokemon(json, pokemon));               
+        dataArray.push(data)
     })
+
+    let configObject= {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(dataArray)
+      }
+    
+    fetch('http://localhost:3000/pokemons', configObject)
+    .then(resp => resp.json())
+    .then(json => addPokemonIdToPokemon(json, roster)); 
 
     startChoosePokemonLevelsProcess(e)
 }
 
-function addPokemonIdToPokemon(data, pokemonElement){
-    const id=data.id 
-    pokemonElement.setAttribute('pokemon-id', id)
+function addPokemonIdToPokemon(data, roster){
+    roster.forEach((pokemon) => {
+        data.forEach((poke)=> {
+            if (poke.name==pokemon.innerText.slice(0,-6)){
+                pokemon.setAttribute('pokemon-id', poke.id)
+            }
+        })
+    })
+    
 }
 
 function removePokemonFromRoster(e){
@@ -153,7 +161,6 @@ function removePokemonFromRoster(e){
 }
 
 function startChoosePokemonLevelsProcess(e){
-    const roster=e.target.parentElement.querySelectorAll('li')
     document.querySelector('#all-pokemon').setAttribute('class', 'pokemon')
     document.querySelector('#poke-roster').setAttribute('class', 'hidden')
     choosePokemonConvo(e)
@@ -161,9 +168,9 @@ function startChoosePokemonLevelsProcess(e){
 }
 
 function choosePokemonConvo(e){
-    const main=document.querySelector('main')
+    const main=document.querySelector('#pre-battle')
     const div=document.createElement('div')
-    div.innerHTML=`<p>Now, let's get these pokemon trained up! Choose the level you want for each pokemon! Be careful the total level of all your pokemon is capped at 300.</p>`
+    div.innerHTML=`<p>Now, let's get these pokemon trained up! Choose the level you want for each pokemon! Choose wisely, the total level of all your pokemon is capped at 300.</p>`
     main.append(div)
 
     setTimeout(function(){
@@ -172,6 +179,7 @@ function choosePokemonConvo(e){
     }, 9000)
 
 }
+
 
 function choosePokemonLevels(e){
     const pokemonElements=e.target.parentElement.querySelectorAll('li')
@@ -185,9 +193,9 @@ function choosePokemonLevels(e){
     pokemonElements.forEach((pokemon)=>{
         let innerDiv=document.createElement('div')
         innerDiv.setAttribute('pokemon-id', pokemon.getAttribute('pokemon-id'))
-        let img=document.createElement('img')
-        img.setAttribute('src', pokemon.getAttribute('pic'))
-        innerDiv.append(img)
+        // let img=document.createElement('img')
+        // img.setAttribute('src', pokemon.getAttribute('pic'))
+        // innerDiv.append(img)
         let name=pokemon.innerText
         name=name.slice(0,-6)
         let p=document.createElement('p')
@@ -217,6 +225,11 @@ function choosePokemonLevels(e){
 
         
     })
+    const submit= document.createElement('button')
+    submit.innerText='Submit Roster'
+    div.append(submit)
+    submit.addEventListener('click', beginBattleProcess)
+
 }
 
 function addLevelToPokemon(e){
@@ -230,5 +243,69 @@ function addLevelToPokemon(e){
         e.target.parentElement.setAttribute('class', 'hidden')
     }
     
-    //Add fetch to do a patch to pokemon to add level
+    let configObject= {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({id: id, level: level})
+      }
+    
+    fetch(`http://localhost:3000/pokemons/${id}`, configObject)
+    
+    
+}
+
+function beginBattleProcess(e){
+    const roster=e.target.parentElement.querySelectorAll('div')
+    e.target.parentElement.setAttribute('class', 'hidden')
+
+    const main=document.querySelector('#pre-battle')
+    const div=document.createElement('div')
+    div.innerHTML=`<p>You have your Pokemon and you've trained them up. It's time to put your skills to the test with a Pokemon Battle!</p>`
+    main.append(div)
+
+    setTimeout(function(){
+        div.setAttribute('class', 'hidden')
+        chooseOpponent(e.target.parentElement)
+    }, 9000)
+
+} 
+
+function chooseOpponent(roster){
+    const main=document.querySelector('#pre-battle')
+    const div=document.createElement('div')
+    div.setAttribute('id','choose-opponent' )
+    div.innerHTML=`<h3>Select an opponent to battle:</h3>`
+    let select=document.createElement('select')
+    select.innerHTML=`
+    <option value="1">Bruno</option>
+    <option value="2">Toni</option>
+    <option value="3">Misty</option>
+    <option value="4">Sparky</option>
+    `
+    div.append(select)
+    const submit=document.createElement('button')
+    submit.innerText='Battle!'
+    submit.addEventListener('click', (e)=>{
+        beginBattle(e,roster)
+    })
+    div.append(submit)
+
+    main.append(div)
+}
+
+function beginBattle(e,roster){
+    let trainerId=e.target.parentElement.querySelector('select').value
+    document.querySelector('#pre-battle').setAttribute('class', 'hidden')
+
+    fetch(`http://localhost:3000/trainers/${trainerId}`)
+    .then(resp => resp.json())
+    .then(json=> renderBattle(json, roster));
+
+}
+
+function renderBattle(opponentRoster, roster){
+    const pokemonRoster=roster.querySelectorAll('div')
 }
