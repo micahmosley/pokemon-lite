@@ -60,7 +60,8 @@ function continueConvo(data){
     const name=data.name 
     const id=data.id 
     const div=document.querySelector('#convo')
-    div.innerHTML=`<p>Wonderful! Trainer ${name} you are about to embark on an exciting but challenging journey. I'm confident that one day you'll be the greatest trainer alive! But first, let's get you some Pokemon.</p>`
+    //added line breaks for readablity
+    div.innerHTML=`<p>Wonderful! Trainer ${name} you are about to embark on an exciting but challenging journey. <br><br>I'm confident that one day you'll be the greatest trainer alive! <br><br>But first, let's get you some Pokemon.</p>`
     setTimeout(function(){
         div.setAttribute('class', 'hidden')
 
@@ -99,7 +100,8 @@ function addPokemonToRoster(e){
     //Ensure that you cant add more than 6 pokemmon
     if (ul.children.length<6){
         let li=document.createElement('li')
-        li.innerText=pokemonElement.innerText
+        // changed this to include the name
+        li.innerText=pokemonElement.parentElement.innerText
         li.setAttribute('type', `${pokemonElement.getAttribute('type')}`)
         li.setAttribute('pic', `${pokemonElement.getAttribute('pic')}`)
         li.setAttribute('trainer-id', `${pokemonElement.getAttribute('trainer-id')}`)
@@ -170,7 +172,10 @@ function startChoosePokemonLevelsProcess(e){
 function choosePokemonConvo(e){
     const main=document.querySelector('#pre-battle')
     const div=document.createElement('div')
-    div.innerHTML=`<p>Now, let's get these pokemon trained up! Choose the level you want for each pokemon! Choose wisely, the total level of all your pokemon is capped at 300.</p>`
+    // setting an id for stylng purposes 
+    div.setAttribute("id", "text-info")
+    // added some line breaks as well for readablity 
+    div.innerHTML=`<p>Now, let's get these pokemon trained up! <br><br>Choose the level you want for each pokemon! <br><br>Choose wisely, the total level of all your pokemon is capped at 300.</p>`
     main.append(div)
 
     setTimeout(function(){
@@ -190,6 +195,7 @@ function choosePokemonLevels(e){
     h3.setAttribute('id', 'remaining-levels')
     h3.innerHTML=`Remaining levels yet to be alloted: <span>${remainingLevels}</span>`
     div.append(h3)
+    console.log(pokemonElements)
     pokemonElements.forEach((pokemon)=>{
         let innerDiv=document.createElement('div')
         innerDiv.setAttribute('pokemon-id', pokemon.getAttribute('pokemon-id'))
