@@ -13,11 +13,18 @@
  *= require_tree .
  *= require_self
  */
+@font-face{
+  font-family: "Pokemon GB";
+  src: url("../fonts/PokemonGb-RAeo.ttf");
+}
+html{
+  font-family: "Pokemon GB";
+}
 body{
- background-image: url("https://lh3.googleusercontent.com/proxy/ZH7hmRqV3_nHoO8vI76zELVWDMNlXF0Mr5HI27JNm-j8DVLVIHK5HcKiRNL95ntvsPHLIaajI6a1FFqt8-NP6JPBmNMXQ-0SD5-uwxlg-7MSN6-85lBs");
+ background-image: url("../images/background-image-pokemon.png");
  background-attachment: fixed;
-    background-position: auto;
-    background-size: cover;
+ background-position: auto;
+ background-size: cover;
 }
 
 h2{
@@ -28,16 +35,23 @@ h2{
  #oak {
     height: 200px;
     width: 200px;
-    
   }
 
   .hidden, .pokemon {
     display:none;
 }
+button{
+  font-family:"Pokemon GB";
 
+}
+
+input.submit{
+  font-family:"Pokemon GB";
+}
 .column {
   float: left;
   width: 20%;
+  padding: 24px;
 }
 
 /* Clear floats after the columns */
@@ -47,7 +61,18 @@ h2{
   clear: both;
 }
 
-
+/* ul:before{
+  content: '';  
+  position: absolute;  
+  left: 0;  
+  top: 50%;  
+  display: block;  
+  border-right: 5px solid black;  
+  border-bottom: 5px solid black;  
+  width: 25px;  
+  height: 25px;  
+  transform: translate(-50%, -50%) rotate(-45deg);
+} */
 
 .column:before{
   content:attr(aria-label);
@@ -57,7 +82,6 @@ h2{
 }
 
 button.remove {
-  float: right;
   background-color: #E1332D;
 }
 button#submit {
@@ -65,7 +89,7 @@ button#submit {
   background-color: hsl(125, 86%, 46%);
 }
 
-#intro{
+#part1{
   background-color: #7bcf66;
   height: 200px;
   width: 300px;
@@ -73,7 +97,7 @@ button#submit {
   padding: 10px;
   border-radius: 30px;
 }
-#convo{
+#part2{
   background-color: #7bcf66;
   height: 200px;
   width: 300px;
@@ -81,14 +105,23 @@ button#submit {
   padding: 10px;
   border-radius: 30px;
 }
+/* #convo{
+  background-color: #7bcf66;
+  height: 200px;
+  width: 300px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+} */
 
 #poke-roster {
   background-color: #7bcf66;
   height: 200px;
-  width: 300px;
+  width: 355px;
   box-shadow: 10px 10px grey;
   padding: 10px;
   border-radius: 30px;
+ 
 }
 
 #roster:before{
@@ -97,24 +130,32 @@ button#submit {
   font-weight:bold;
   padding-right: 20px;
 }
-
+.roster{
+  list-style-type: decimal;
+}
 ul#roster li {
   font-size: 1.05em;
   list-style: none;
   padding-right: 20px;
+  
+  display: flex;
+  justify-content: space-between;
 }
-
+ul{
+  padding-inline-start: 0px;
+}
 ul#fire {
   background-color: #E1332D;
   box-shadow: 10px 10px grey;
     padding: 25px;
     border-radius: 30px;
     margin-left: 10px;
+    
 }
 
 
 ul#water{
-  background-color: blue;
+  background-color: rgb(41, 61, 240);
   box-shadow: 10px 10px grey;
     padding: 25px;
     border-radius: 30px;
@@ -147,31 +188,32 @@ ul#rock{
 
 ul#grass{
   background-color: green;
-  /* height: 200px;
-  width: 300px; */
+ 
+
   box-shadow: 10px 10px grey;
-  padding: 10px;
-  border-radius: 30px;
-  margin-left: 10px;
+    padding: 25px;
+    border-radius: 30px;
+    margin-left: 10px;
 }
 
 ul#fighting{
   background-color: brown;
-  /* height: 200px;
-  width: 300px; */
+  
   box-shadow: 10px 10px grey;
-  padding: 10px;
-  border-radius: 30px;
-  margin-left: 10px;
+    padding: 25px;
+    border-radius: 30px;
+    margin-left: 10px;
 }
 
 ul#bug{
   background-color: yellowgreen;
-  /* height: 200px;
-  width: 300px; */
+
   box-shadow: 10px 10px grey;
-  padding: 10px;
-  border-radius: 30px;
-  margin-left: 10px;
+    padding: 25px;
+    border-radius: 30px;
+    margin-left: 10px;
 }
 
+#choose-pokemon-levels {
+  background-color: yellow;
+}
