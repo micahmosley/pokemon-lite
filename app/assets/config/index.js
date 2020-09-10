@@ -193,9 +193,9 @@ function choosePokemonLevels(e){
     pokemonElements.forEach((pokemon)=>{
         let innerDiv=document.createElement('div')
         innerDiv.setAttribute('pokemon-id', pokemon.getAttribute('pokemon-id'))
-        // let img=document.createElement('img')
-        // img.setAttribute('src', pokemon.getAttribute('pic'))
-        // innerDiv.append(img)
+        let img=document.createElement('img')
+        img.setAttribute('src', pokemon.getAttribute('pic'))
+        innerDiv.append(img)
         let name=pokemon.innerText
         name=name.slice(0,-6)
         let p=document.createElement('p')
