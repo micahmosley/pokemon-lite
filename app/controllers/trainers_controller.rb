@@ -13,6 +13,13 @@ class TrainersController < ApplicationController
 
     def show 
         trainer=Trainer.find(params[:id])
+        
+        
+        render json: trainer
+    end 
+
+    def pokemons
+        trainer=Trainer.find(params[:id])
         pokemon=trainer.pokemons
         
         render json: pokemon

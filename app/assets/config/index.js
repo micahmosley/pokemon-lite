@@ -1,6 +1,6 @@
 // Load all the channels within this directory and all subdirectories.
 // Channel files must be named *_channel.js.
-
+let battleDiv=document.querySelector('#battle')
 const Pokemon_URL="http://localhost:3000/pocketmonsters"
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -76,10 +76,10 @@ function renderPokemon(data, trainerId){
     data.forEach((pokemon)=> {
         
         let li=document.createElement('li')
-        li.innerText=pokemon.name
         li.setAttribute('trainer-id', trainerId)
         li.setAttribute('type', pokemon.poke_type)
         li.setAttribute('pic', pokemon.img)
+        li.innerHTML=`${pokemon.name} <img src=${pokemon.img}>`
         types.forEach((type)=>{
             let id=type.getAttribute('id')
             if (id==pokemon.poke_type){
@@ -148,7 +148,7 @@ function createPokemonInBackend(e){
 function addPokemonIdToPokemon(data, roster){
     roster.forEach((pokemon) => {
         data.forEach((poke)=> {
-            if (poke.name==pokemon.innerText.slice(0,-6)){
+            if (poke.name==pokemon.innerText.slice(0,-7)){
                 pokemon.setAttribute('pokemon-id', poke.id)
             }
         })
@@ -280,27 +280,40 @@ function chooseOpponent(roster){
     div.innerHTML=`<h3>Select an opponent to battle:</h3>`
     let select=document.createElement('select')
     select.innerHTML=`
-    <option value="1">Bruno</option>
+    <option value="1">Brock</option>
     <option value="2">Toni</option>
     <option value="3">Misty</option>
-    <option value="4">Sparky</option>
+    <option value="4">Gary</option>
     `
     div.append(select)
     const submit=document.createElement('button')
     submit.innerText='Battle!'
     submit.addEventListener('click', (e)=>{
-        beginBattle(e,roster)
+        renderOpponent(e,roster)
     })
     div.append(submit)
 
     main.append(div)
 }
 
-function beginBattle(e,roster){
+function renderOpponent(e,roster){
     let trainerId=e.target.parentElement.querySelector('select').value
     document.querySelector('#pre-battle').setAttribute('class', 'hidden')
 
     fetch(`http://localhost:3000/trainers/${trainerId}`)
+    .then(resp => resp.json())
+    .then(json=> {
+        let div=document.createElement('div')
+        div.innerHTML=`<img src=${json.img}>`
+        div.setAttribute('id', 'opponent')
+        battleDiv.append(div)
+        let h3=document.createElement('h3')
+        h3.innerText=`${json.name} wants to Battle!`
+        div.append(h3)
+        battleDiv.append(div)
+    });
+
+    fetch(`http://localhost:3000/trainers/${trainerId}/pokemons`)
     .then(resp => resp.json())
     .then(json=> renderBattle(json, roster));
 
@@ -308,4 +321,15 @@ function beginBattle(e,roster){
 
 function renderBattle(opponentRoster, roster){
     const pokemonRoster=roster.querySelectorAll('div')
+
+    setTimeout(function(){
+        let div=document.querySelector('#opponent')
+        div.setAttribute('class', 'hidden')
+        startBattle()
+    }, 4000)
+
+    function startBattle(){
+        console.log(opponentRoster)
+        console.log(pokemonRoster)
+    }
 }

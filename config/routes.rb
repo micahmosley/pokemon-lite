@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   resources :trainers
 
   get 'pocketmonsters', to: 'pokemons#data'
+  get '/trainers/:id/pokemons', to: 'trainers#pokemons'
 
 end
