@@ -72,11 +72,14 @@ function continueConvo(data){
 }
 
 function renderPokemon(data, trainerId){
-    console.log(trainerId)
+    // removed a console.log
     const types=document.querySelectorAll('ul')
     data.forEach((pokemon)=> {
+        
         let li=document.createElement('li')
         li.innerText=pokemon.name
+        console.log(pokemon)
+       
         li.setAttribute('type', pokemon.poke_type)
         li.setAttribute('pic', pokemon.img)
         types.forEach((type)=>{
@@ -98,7 +101,7 @@ function addPokemonToRoster(e){
     //Ensure that you cant add more than 6 pokemmon
     if (ul.children.length<6){
         let li=document.createElement('li')
-        li.innerText=pokemonElement.innerText 
+        li.innerText=pokemonElement.innerText
         li.setAttribute('type', `${pokemonElement.getAttribute('type')}`)
         li.setAttribute('pic', `${pokemonElement.getAttribute('pic')}`)
         let deleteButton=document.createElement('button')
