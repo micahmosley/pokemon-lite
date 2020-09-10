@@ -12,6 +12,8 @@ default: &default
 development:
   <<: *default
   database: db/development.sqlite3
+  pool: 500
+  timeout: 3000
   
 
 # Warning: The database defined as "test" will be erased and
