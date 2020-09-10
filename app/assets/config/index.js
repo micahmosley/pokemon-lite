@@ -329,7 +329,8 @@ function renderBattle(opponentRoster, roster){
     }, 4000)
 
     function startBattle(){
-        console.log(opponentRoster)
-        console.log(pokemonRoster)
+        console.log(opponentRoster[0])
+        console.log(pokemonRoster[0])
+
     }
 }

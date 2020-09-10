@@ -35,6 +35,7 @@ class PokemonsController < ApplicationController
         pokemon_array=[]
         params["_json"].each do |pokemon|
             pokemon=Pokemon.create(name: pokemon["name"], img: pokemon["img"], level: pokemon["level"], poke_type: pokemon["poke_type"], trainer_id: pokemon["trainer_id"])
+            pokemon.attacks
             pokemon_array << pokemon
         end 
         

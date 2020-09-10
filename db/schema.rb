@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2020_09_04_170209) do
 
   create_table "attacks", force: :cascade do |t|
     t.string "name"
-    t.integer "damage"
+    t.string "damage"
     t.float "hit"
     t.string "special"
     t.datetime "created_at", precision: 6, null: false
