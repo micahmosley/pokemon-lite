@@ -74,6 +74,7 @@ function continueConvo(data){
 function renderPokemon(data, trainerId){
     const types=document.querySelectorAll('ul')
     data.forEach((pokemon)=> {
+        
         let li=document.createElement('li')
         li.innerText=pokemon.name
         li.setAttribute('trainer-id', trainerId)
@@ -98,7 +99,7 @@ function addPokemonToRoster(e){
     //Ensure that you cant add more than 6 pokemmon
     if (ul.children.length<6){
         let li=document.createElement('li')
-        li.innerText=pokemonElement.innerText 
+        li.innerText=pokemonElement.innerText
         li.setAttribute('type', `${pokemonElement.getAttribute('type')}`)
         li.setAttribute('pic', `${pokemonElement.getAttribute('pic')}`)
         li.setAttribute('trainer-id', `${pokemonElement.getAttribute('trainer-id')}`)

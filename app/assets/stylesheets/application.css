@@ -13,10 +13,22 @@
  *= require_tree .
  *= require_self
  */
+body{
+ background-image: url("https://lh3.googleusercontent.com/proxy/ZH7hmRqV3_nHoO8vI76zELVWDMNlXF0Mr5HI27JNm-j8DVLVIHK5HcKiRNL95ntvsPHLIaajI6a1FFqt8-NP6JPBmNMXQ-0SD5-uwxlg-7MSN6-85lBs");
+ background-attachment: fixed;
+    background-position: auto;
+    background-size: cover;
+}
+
+h2{
+  text-align:center ;
+}
+
 
  #oak {
     height: 200px;
     width: 200px;
+    
   }
 
   .hidden, .pokemon {
@@ -53,13 +65,30 @@ button#submit {
   background-color: hsl(125, 86%, 46%);
 }
 
-#poke-roster {
-  background-color: #eeeeee;
+#intro{
+  background-color: #7bcf66;
   height: 200px;
   width: 300px;
   box-shadow: 10px 10px grey;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 30px;
+}
+#convo{
+  background-color: #7bcf66;
+  height: 200px;
+  width: 300px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+#poke-roster {
+  background-color: #7bcf66;
+  height: 200px;
+  width: 300px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
 }
 
 #roster:before{
@@ -75,6 +104,74 @@ ul#roster li {
   padding-right: 20px;
 }
 
+ul#fire {
+  background-color: #E1332D;
+  box-shadow: 10px 10px grey;
+    padding: 25px;
+    border-radius: 30px;
+    margin-left: 10px;
+}
 
 
+ul#water{
+  background-color: blue;
+  box-shadow: 10px 10px grey;
+    padding: 25px;
+    border-radius: 30px;
+    margin-left: 10px;
+}
+
+ul#ghost{
+  background-color: rgb(199, 98, 190);
+  box-shadow: 10px 10px grey;
+    padding: 25px;
+    border-radius: 30px;
+    margin-left: 10px;
+}
+
+ul#electric{
+  background-color: goldenrod;
+  box-shadow: 10px 10px grey;
+    padding: 25px;
+    border-radius: 30px;
+    margin-left: 10px;
+}
+
+ul#rock{
+  background-color: grey;
+  box-shadow: 10px 10px grey;
+  padding: 25px;
+  border-radius: 30px;
+  margin-left: 10px;
+}
+
+ul#grass{
+  background-color: green;
+  /* height: 200px;
+  width: 300px; */
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+  margin-left: 10px;
+}
+
+ul#fighting{
+  background-color: brown;
+  /* height: 200px;
+  width: 300px; */
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+  margin-left: 10px;
+}
+
+ul#bug{
+  background-color: yellowgreen;
+  /* height: 200px;
+  width: 300px; */
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+  margin-left: 10px;
+}
 
