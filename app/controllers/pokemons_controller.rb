@@ -37,6 +37,10 @@ class PokemonsController < ApplicationController
         render json: pokemon
     end 
 
+    def update 
+        
+    end 
+
     
     
 end
