@@ -199,6 +199,7 @@ function choosePokemonLevels(e){
         let name=pokemon.innerText
         name=name.slice(0,-6)
         let p=document.createElement('p')
+        console.log(pokemon)
         p.innerText=`What level would you like your ${name} to be?`
         innerDiv.append(p)
         let form=document.createElement('form')

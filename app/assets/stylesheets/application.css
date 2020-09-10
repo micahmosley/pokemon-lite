@@ -214,6 +214,12 @@ ul#bug{
     margin-left: 10px;
 }
 
-#choose-pokemon-levels {
-  background-color: yellow;
-}
+#choose-pokemon-levels > div {
+  background-color: #7bcf66;
+  box-shadow: 10px 10px grey;
+  padding: 25px;
+  border-radius: 30px;
+  margin-left: 10px;
+  margin-top: 25px;
+  justify-content: flex-end;
+  width: 350px;
