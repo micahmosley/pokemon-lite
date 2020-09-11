@@ -248,3 +248,29 @@ mix-blend-mode: multiply;
   padding: 10px;
   border-radius: 30px;
 }
+
+#battle {
+  padding: 0;
+  margin: 0;
+}
+
+.opponent-pokemon {
+  display: inline-block;
+  float: left;
+  margin-left: 350px;
+}
+
+.your-pokemon {
+  display: inline-block;
+  float: left;
+  margin-left:200px;
+}
+
+ul.attacks {
+  list-style: none;
+}
+
+.your-pokemon img, .opponent-pokemon img {
+  height:200px;
+  width:200px;
+}

@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 2020_09_04_170209) do
     t.string "name"
     t.string "damage"
     t.float "hit"
-    t.string "special"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -4,9 +4,7 @@ class CreateAttacks < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :damage
       t.float :hit
-      t.string :special
       
-
       t.timestamps
     end
   end

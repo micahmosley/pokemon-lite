@@ -35,12 +35,16 @@ class PokemonsController < ApplicationController
         pokemon_array=[]
         params["_json"].each do |pokemon|
             pokemon=Pokemon.create(name: pokemon["name"], img: pokemon["img"], level: pokemon["level"], poke_type: pokemon["poke_type"], trainer_id: pokemon["trainer_id"])
-            pokemon.attacks
+            pokemon.populate_attacks
             pokemon_array << pokemon
         end 
         
 
         render json: pokemon_array
+    end 
+
+    def show 
+        render json: Pokemon.find(params[:id])
     end 
 
     def update 
@@ -51,6 +55,12 @@ class PokemonsController < ApplicationController
         pokemon.update(level: level, life: life)
 
         render json: pokemon
+    end 
+
+    def pokemon_attacks
+        pokemon=Pokemon.find(params[:id])
+
+        render json: pokemon.attacks
     end 
 
     

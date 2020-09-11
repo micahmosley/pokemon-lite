@@ -3,8 +3,10 @@ Rails.application.routes.draw do
 
   resources :pokemons
   resources :trainers
+  resources :attacks
 
   get 'pocketmonsters', to: 'pokemons#data'
   get '/trainers/:id/pokemons', to: 'trainers#pokemons'
+  get '/pokemons/:id/attacks', to: 'pokemons#pokemon_attacks'
 
 end

@@ -195,7 +195,6 @@ function choosePokemonLevels(e){
     h3.setAttribute('id', 'remaining-levels')
     h3.innerHTML=`Remaining levels yet to be alloted: <span>${remainingLevels}</span>`
     div.append(h3)
-    console.log(pokemonElements)
     pokemonElements.forEach((pokemon)=>{
         let innerDiv=document.createElement('div')
         innerDiv.setAttribute('pokemon-id', pokemon.getAttribute('pokemon-id'))
@@ -312,6 +311,7 @@ function renderOpponent(e,roster){
         let div=document.createElement('div')
         div.innerHTML=`<img src=${json.img}>`
         div.setAttribute('id', 'opponent')
+        div.setAttribute('opponent', `${json.name}`)
         battleDiv.append(div)
         let h3=document.createElement('h3')
         h3.innerText=`${json.name} wants to Battle!`
@@ -321,22 +321,260 @@ function renderOpponent(e,roster){
 
     fetch(`http://localhost:3000/trainers/${trainerId}/pokemons`)
     .then(resp => resp.json())
-    .then(json=> renderBattle(json, roster));
+    .then(json=> renderBattle(json, roster, trainerId));
 
 }
 
-function renderBattle(opponentRoster, roster){
+function renderBattle(opponentRoster, roster, trainerId){
     const pokemonRoster=roster.querySelectorAll('div')
+    const numberOfPokemon=pokemonRoster.length
+    let currentPokemonIndex=0
 
     setTimeout(function(){
         let div=document.querySelector('#opponent')
+        const opponentName=div.getAttribute('opponent')
         div.setAttribute('class', 'hidden')
-        startBattle()
+        startBattle(opponentName)
     }, 4000)
 
-    function startBattle(){
-        console.log(opponentRoster[0])
-        console.log(pokemonRoster[0])
+    function startBattle(opponentName){
+        
+        let div=document.createElement('div')
+        div.setAttribute('class', 'opponent-pokemon')
+        
+        div.innerHTML=`<h4 id='opponent-level' level= '${opponentRoster[0].level}'>lvl ${opponentRoster[0].level} ${opponentRoster[0].name}</h4><h4>Life Points: <span>${opponentRoster[0].life}</span></h4><img src=${opponentRoster[0].img}>`
+        battleDiv.append(div)
+
+        fetch(`http://localhost:3000/pokemons/${opponentRoster[0].id}/attacks`)
+        .then(resp => resp.json())
+        .then(json=> {
+            renderAttacks(json, "opponent")
+        });
+
+        fetch(`http://localhost:3000/pokemons/${pokemonRoster[0].getAttribute('pokemon-id')}`)
+        .then(resp => resp.json())
+        .then(json=> {
+        let div2=document.createElement('div')
+        div2.setAttribute('class', 'your-pokemon')
+        div2.innerHTML=`<h4 id='your-level' level= '${json.level}'>lvl ${json.level} ${json.name}</h4><h4>Life Points: <span>${json.life}</span></h4><img src=${pokemonRoster[0].querySelector('img').getAttribute('src')}>`
+        battleDiv.append(div2)
+        });
+    
+        fetch(`http://localhost:3000/pokemons/${pokemonRoster[0].getAttribute('pokemon-id')}/attacks`)
+        .then(resp => resp.json())
+        .then(json=> {
+            renderAttacks(json, "player")
+        });
 
     }
+
+    function renderAttacks(attacks, player){
+        if (player=="opponent"){
+            let ul=document.createElement('ul')
+            ul.setAttribute('class', 'attacks')
+            ul.setAttribute('id', 'opponent-attacks')
+            attacks.forEach((attack)=> {
+            let li=document.createElement('li')
+            li.innerHTML=`<span>${attack.name}</span>`
+            li.setAttribute('attack-id', `${attack.id}`)
+            ul.append(li)
+            document.querySelector('.opponent-pokemon').append(ul)
+        })
+        } else {
+            let ul2=document.createElement('ul')
+            ul2.setAttribute('class', 'attacks')
+            attacks.forEach((attack)=> {
+            let li=document.createElement('li')
+            li.innerHTML=`<span>${attack.name}</span>`
+            li.setAttribute('attack-id', `${attack.id}`)
+            li.addEventListener('click', executePlayerAttack)
+            ul2.append(li)
+            document.querySelector('.your-pokemon').append(ul2)
+        });
+      
+    }
+
+    function executePlayerAttack(e){
+        //Execute player's attack
+        //Get player's pokemon's level
+        const level= document.querySelector('#your-level').getAttribute('level')
+        let opponentLife=document.querySelector('.opponent-pokemon h4 span')
+        let fainted="false"
+        fetch(`http://localhost:3000/attacks/${e.target.parentElement.getAttribute('attack-id')}`)
+        .then(resp => resp.json())
+        .then(attack=> {
+            //If attack hits
+            if (Math.random()<attack.hit){
+                if (attack.damage=="low"){
+                    let damage=Math.round(level/6)
+                    let newLife=opponentLife.innerText-damage
+                    //If pokemon is still alive
+                    if (newLife >0){
+                        opponentLife.innerText=newLife
+                    } else {
+                        opponentLife.innerText=0
+                        fainted="true"
+                        switchComputerPokemon()
+                    }
+                    
+                } else if (attack.damage=="medium"){
+                    let damage=Math.round(level/4)
+                    let newLife=opponentLife.innerText-damage
+                    //If pokemon is still alive
+                    if (newLife >0){
+                        opponentLife.innerText=newLife
+                    } else {
+                        opponentLife.innerText=0
+                        fainted="true"
+                        switchComputerPokemon()
+                    }
+                } else {
+                    let damage=Math.round(level/2)
+                    let newLife=opponentLife.innerText-damage
+                    //If pokemon is still alive
+                    if (newLife >0){
+                        opponentLife.innerText=newLife
+                    } else {
+                        opponentLife.innerText=0
+                        fainted="true"
+                        switchComputerPokemon()
+                    }
+                }
+            } 
+            //if attack missed
+            else {
+                window.alert(`${attack.name} missed!`);
+            }
+
+            if (fainted=="false") {
+                //Execute Computer's attack
+                setTimeout(function(){
+                executeComputerAttack()
+            }, 2000)
+            }
+    
+        })
+
+    
+
+
+    }
+
+}
+
+function executeComputerAttack(){
+    const attacks=document.querySelectorAll('#opponent-attacks li')
+    let randomAttack = attacks[Math.floor(Math.random()*attacks.length)];
+    //Get computer's pokemon's level
+    const level= document.querySelector('#opponent-level').getAttribute('level')
+    let playerLife=document.querySelector('.your-pokemon h4 span')
+    
+    fetch(`http://localhost:3000/attacks/${randomAttack.getAttribute('attack-id')}`)
+    .then(resp => resp.json())
+    .then(attack=> {
+        //If attack hits
+        if (Math.random()<attack.hit){
+            if (attack.damage=="low"){
+                let damage=Math.round(level/6)
+                let newLife=playerLife.innerText-damage
+                //If pokemon is still alive
+                if (newLife >0){
+                    playerLife.innerText=newLife
+                } else {
+                    playerLife.innerText=0
+                    switchPlayerPokemon()
+                }
+                
+            } else if (attack.damage=="medium"){
+                let damage=Math.round(level/4)
+                let newLife=playerLife.innerText-damage
+                //If pokemon is still alive
+                if (newLife >0){
+                    playerLife.innerText=newLife
+                } else {
+                    playerLife.innerText=0
+                    switchPlayerPokemon()
+                }
+            } else {
+                let damage=Math.round(level/2)
+                let newLife=playerLife.innerText-damage
+                //If pokemon is still alive
+                if (newLife >0){
+                    playerLife.innerText=newLife
+                } else {
+                    playerLife.innerText=0
+                    switchPlayerPokemon()
+                }
+            }
+        } 
+        //if attack missed
+        else {
+            window.alert(`Opponent's ${attack.name} missed!`);
+        }
+
+    });
+}
+
+function switchComputerPokemon(){
+    opponentRoster.shift()
+    if (opponentRoster.length==0){
+        youWin()
+    }else{
+    let div=document.querySelector('.opponent-pokemon')
+    div.innerHTML=`<h4 id='opponent-level' level= '${opponentRoster[0].level}'>lvl ${opponentRoster[0].level} ${opponentRoster[0].name}</h4><h4>Life Points: <span>${opponentRoster[0].life}</span></h4><img src=${opponentRoster[0].img}>`
+
+    fetch(`http://localhost:3000/pokemons/${opponentRoster[0].id}/attacks`)
+    .then(resp => resp.json())
+    .then(json=> {
+        renderAttacks(json, "opponent")
+    });
+    }
+
+}
+
+function switchPlayerPokemon(){
+    currentPokemonIndex++
+    if (currentPokemonIndex==numberOfPokemon){
+        youLose()
+    }
+    else{
+    fetch(`http://localhost:3000/pokemons/${pokemonRoster[currentPokemonIndex].getAttribute('pokemon-id')}`)
+    .then(resp => resp.json())
+    .then(json=> {
+    let div2=document.querySelector('.your-pokemon')
+    div2.innerHTML=`<h4 id='your-level' level= '${json.level}'>lvl ${json.level} ${json.name}</h4><h4>Life Points: <span>${json.life}</span></h4><img src=${pokemonRoster[currentPokemonIndex].querySelector('img').getAttribute('src')}>`
+});
+
+    fetch(`http://localhost:3000/pokemons/${pokemonRoster[currentPokemonIndex].getAttribute('pokemon-id')}/attacks`)
+    .then(resp => resp.json())
+    .then(json=> {
+        renderAttacks(json, "player")
+    });
+    }
+   
+
+}
+
+function youWin(){
+    document.querySelector('#battle').setAttribute('class', 'hidden')
+    fetch(`http://localhost:3000/trainers/${trainerId}`)
+    .then(resp => resp.json())
+    .then(trainer=> {
+        let div=document.querySelector('#post-battle')
+        div.innerHTML=`<img src=${trainer.img}> <h3>You win....this time.</h3>`
+    });
+}
+
+function youLose(){
+    document.querySelector('#battle').setAttribute('class', 'hidden')
+    fetch(`http://localhost:3000/trainers/${trainerId}`)
+    .then(resp => resp.json())
+    .then(trainer=> {
+        let div=document.querySelector('#post-battle')
+        div.innerHTML=`<img src=${trainer.img}> <h3>Better luck next time, loser.</h3>`
+    });
+}
+
+
+
 }
