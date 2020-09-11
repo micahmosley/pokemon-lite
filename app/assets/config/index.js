@@ -18,7 +18,7 @@ function startConvo(){
        
         convoElements[count].setAttribute('class', '')
         const convoElement=convoElements[count]
-        setTimeout(()=>hideConvo(convoElement), 3000)
+        setTimeout(()=>hideConvo(convoElement), 6000)
        
     }
     
@@ -576,14 +576,14 @@ function executeComputerAttack(){
 }
 
 function switchComputerPokemon(){
+    console.log("made it")
     setTimeout(function(){
     let box=document.querySelector('#battle-box')
     opponentRoster.shift()
-    box.innerHTML=`Opponent switched to ${opponentRoster[0].name}`
-
     if (opponentRoster.length==0){
         youWin()
     }else{
+    box.innerHTML=`Opponent switched to ${opponentRoster[0].name}`
     let div=document.querySelector('.opponent-pokemon')
     div.innerHTML=`<h4 id='opponent-level' data-name='${opponentRoster[0].name}' level= '${opponentRoster[0].level}'>lvl ${opponentRoster[0].level} ${opponentRoster[0].name}</h4><h4>Life Points: <span>${opponentRoster[0].life}</span></h4><img src=${opponentRoster[0].img}>`
 

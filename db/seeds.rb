@@ -15,8 +15,8 @@ charizard=Pokemon.create(name: 'charizard', poke_type: 'fire', img: './images/ch
 rapidash=Pokemon.create(name: 'rapidash', poke_type: 'fire', img: './images/rapidash.png', level:60, life:120, trainer:toni)
 
 misty=Trainer.create(name:"Misty", img: './images/misty.jpeg')
-staryu=Pokemon.create(name: 'staryu', poke_type: 'water', img: './images/staryu.jpeg', level:62, life:124, trainer:misty)
-squirtle=Pokemon.create(name: 'squirtle', poke_type: 'water', img: './images/squirtle.jpeg', level:63, life:126, trainer:misty)
+staryu=Pokemon.create(name: 'staryu', poke_type: 'water', img: './images/staryu.jpeg', level:32, life:64, trainer:misty)
+squirtle=Pokemon.create(name: 'squirtle', poke_type: 'water', img: './images/squirtle.jpeg', level:12, life:24, trainer:misty)
 
 
 sparky=Trainer.create(name:"Gary", img: './images/Gary.jpeg')
