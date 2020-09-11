@@ -301,3 +301,12 @@ ul.attacks > li:hover{
 
   cursor: crosshair;  
 }
+
+#post-battle{
+  text-align: center;
+}
+
+
+#opponent{
+  text-align: center;
+}
