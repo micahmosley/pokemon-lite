@@ -268,7 +268,10 @@ function beginBattleProcess(e){
 
     const main=document.querySelector('#pre-battle')
     const div=document.createElement('div')
-    div.innerHTML=`<p>You have your Pokemon and you've trained them up. It's time to put your skills to the test with a Pokemon Battle!</p>`
+    // added an id to div for styling 
+    div.setAttribute("id", "battle-intro")
+    // added line breaks for better reading
+    div.innerHTML=`<p>You have your Pokemon and you've trained them up. <br><br>It's time to put your skills to the test with a Pokemon Battle!</p>`
     main.append(div)
 
     setTimeout(function(){
@@ -376,7 +379,8 @@ function renderBattle(opponentRoster, roster, trainerId){
             ul.setAttribute('id', 'opponent-attacks')
             attacks.forEach((attack)=> {
             let li=document.createElement('li')
-            li.innerHTML=`<span>${attack.name}</span>`
+            //added yet another line break doesnt seem to do anything tho
+            li.innerHTML=`<span>${attack.name}<br></span>`
             li.setAttribute('attack-id', `${attack.id}`)
             ul.append(li)
             document.querySelector('.opponent-pokemon').append(ul)
@@ -386,7 +390,7 @@ function renderBattle(opponentRoster, roster, trainerId){
             ul2.setAttribute('class', 'attacks')
             attacks.forEach((attack)=> {
             let li=document.createElement('li')
-            li.innerHTML=`<span>${attack.name}</span>`
+            li.innerHTML=`<span>${attack.name}</span><br>`
             li.setAttribute('attack-id', `${attack.id}`)
             li.addEventListener('click', executePlayerAttack)
             ul2.append(li)
@@ -416,6 +420,7 @@ function renderBattle(opponentRoster, roster, trainerId){
         .then(attack=> {
             //If attack hits
             if (Math.random()<attack.hit){
+                myMove()
                 if (attack.damage=="low"){
                     let damage=Math.round(level/6)
                     let newLife=opponentLife.innerText-damage
@@ -645,6 +650,20 @@ function youLose(){
     }, 3000)
 }
 
-
+function myMove() {
+    var elem = document.querySelector(".your-pokemon");
+    var pos = 0;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (pos == 350) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.top = pos + 'px';
+        elem.style.left = pos + 'px';
+      }
+    }
+  }
+  
 
 }

@@ -92,8 +92,8 @@ button#submit {
 
 #part1{
   background-color: #7bcf66;
-  height: 200px;
-  width: 800px;
+  height: 150px;
+  width: 700px;
   box-shadow: 10px 10px grey;
   padding: 10px;
   border-radius: 30px;
@@ -258,16 +258,25 @@ mix-blend-mode: multiply;
   display: inline-block;
   float: left;
   margin-left: 350px;
+  
 }
 
 .your-pokemon {
   display: inline-block;
   float: left;
-  margin-left:200px;
+  margin-left:600px;
+ 
 }
 
 ul.attacks {
-  list-style: none;
+  list-style: decimal;
+  background-color: #7bcf66;
+  height: 60px;
+  width: 160px;
+  box-shadow: 10px 10px grey;
+  padding: 59px;
+  border-radius: 30px;
+
 }
 
 .your-pokemon img, .opponent-pokemon img {
@@ -289,5 +298,33 @@ ul.attacks {
   box-shadow: 10px 10px grey;
   padding: 10px;
   border-radius: 30px;
+  text-align: center;
+}
+  mix-blend-mode: multiply;
+}
+
+
+#battle-intro > p {
+  list-style: none;
+  background-color: #7bcf66;
+  height: 150px;
+  width: 600px;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+ul.attacks > li:hover{
+  color: white;
+
+  cursor: crosshair;  
+}
+
+#post-battle{
+  text-align: center;
+}
+
+
+#opponent{
   text-align: center;
 }
