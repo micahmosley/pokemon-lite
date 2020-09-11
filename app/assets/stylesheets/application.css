@@ -274,3 +274,20 @@ ul.attacks {
   height:200px;
   width:200px;
 }
+
+/* #battle-box:before { 
+  content: '\A'; 
+} */
+
+#battle-box{
+  position: absolute;
+  bottom: 5px;
+  left: 330px;
+  background-color: #818d7e;
+  height: 100px;
+  width: 48%;
+  box-shadow: 10px 10px grey;
+  padding: 10px;
+  border-radius: 30px;
+  text-align: center;
+}

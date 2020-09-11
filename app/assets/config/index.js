@@ -329,6 +329,7 @@ function renderBattle(opponentRoster, roster, trainerId){
     const pokemonRoster=roster.querySelectorAll('div')
     const numberOfPokemon=pokemonRoster.length
     let currentPokemonIndex=0
+    let counter=0
 
     setTimeout(function(){
         let div=document.querySelector('#opponent')
@@ -342,7 +343,7 @@ function renderBattle(opponentRoster, roster, trainerId){
         let div=document.createElement('div')
         div.setAttribute('class', 'opponent-pokemon')
         
-        div.innerHTML=`<h4 id='opponent-level' level= '${opponentRoster[0].level}'>lvl ${opponentRoster[0].level} ${opponentRoster[0].name}</h4><h4>Life Points: <span>${opponentRoster[0].life}</span></h4><img src=${opponentRoster[0].img}>`
+        div.innerHTML=`<h4 id='opponent-level' data-name='${opponentRoster[0].name}' level= '${opponentRoster[0].level}'>lvl ${opponentRoster[0].level} ${opponentRoster[0].name}</h4><h4>Life Points: <span>${opponentRoster[0].life}</span></h4><img src=${opponentRoster[0].img}>`
         battleDiv.append(div)
 
         fetch(`http://localhost:3000/pokemons/${opponentRoster[0].id}/attacks`)
@@ -356,7 +357,7 @@ function renderBattle(opponentRoster, roster, trainerId){
         .then(json=> {
         let div2=document.createElement('div')
         div2.setAttribute('class', 'your-pokemon')
-        div2.innerHTML=`<h4 id='your-level' level= '${json.level}'>lvl ${json.level} ${json.name}</h4><h4>Life Points: <span>${json.life}</span></h4><img src=${pokemonRoster[0].querySelector('img').getAttribute('src')}>`
+        div2.innerHTML=`<h4 id='your-level' data-name='${json.name}'level= '${json.level}'>lvl ${json.level} ${json.name}</h4><h4>Life Points: <span>${json.life}</span></h4><img src=${pokemonRoster[0].querySelector('img').getAttribute('src')}>`
         battleDiv.append(div2)
         });
     
@@ -391,6 +392,13 @@ function renderBattle(opponentRoster, roster, trainerId){
             ul2.append(li)
             document.querySelector('.your-pokemon').append(ul2)
         });
+        if (counter==0){
+            let box=document.createElement('div')
+            box.setAttribute('id', 'battle-box')
+            battleDiv.append(box)
+            counter++
+        }
+        
       
     }
 
@@ -400,6 +408,9 @@ function renderBattle(opponentRoster, roster, trainerId){
         const level= document.querySelector('#your-level').getAttribute('level')
         let opponentLife=document.querySelector('.opponent-pokemon h4 span')
         let fainted="false"
+        let box=document.querySelector('#battle-box')
+        const pokemonName=document.querySelector('.your-pokemon h4').getAttribute('data-name')
+        const opponentPokemonName=document.querySelector('.opponent-pokemon h4').getAttribute('data-name')
         fetch(`http://localhost:3000/attacks/${e.target.parentElement.getAttribute('attack-id')}`)
         .then(resp => resp.json())
         .then(attack=> {
@@ -408,49 +419,70 @@ function renderBattle(opponentRoster, roster, trainerId){
                 if (attack.damage=="low"){
                     let damage=Math.round(level/6)
                     let newLife=opponentLife.innerText-damage
+                    box.innerHTML=`<p>${pokemonName} used ${attack.name}!</p>`
+                    setTimeout(function(){
+                        box.innerHTML=`<p>${attack.name} did ${damage} damage!</p>`
+                    }, 2000)
                     //If pokemon is still alive
                     if (newLife >0){
                         opponentLife.innerText=newLife
                     } else {
                         opponentLife.innerText=0
+                        setTimeout(function(){
+                            box.innerHTML=`<p>${opponentPokemonName} fainted!</p>`
+                            switchComputerPokemon()
+                        }, 4000)
                         fainted="true"
-                        switchComputerPokemon()
                     }
                     
                 } else if (attack.damage=="medium"){
                     let damage=Math.round(level/4)
                     let newLife=opponentLife.innerText-damage
+                    box.innerHTML=`<p>${pokemonName} used ${attack.name}!</p>`
+                    setTimeout(function(){
+                        box.innerHTML=`<p>${attack.name} did ${damage} damage!</p>`
+                    }, 2000)
                     //If pokemon is still alive
                     if (newLife >0){
                         opponentLife.innerText=newLife
                     } else {
                         opponentLife.innerText=0
+                        setTimeout(function(){
+                            box.innerHTML=`<p>${opponentPokemonName} fainted!</p>`
+                            switchComputerPokemon()
+                        }, 4000)
                         fainted="true"
-                        switchComputerPokemon()
                     }
                 } else {
                     let damage=Math.round(level/2)
                     let newLife=opponentLife.innerText-damage
+                    box.innerHTML=`<p>${pokemonName} used ${attack.name}!</p>`
+                    setTimeout(function(){
+                        box.innerHTML=`<p>${attack.name} did ${damage} damage!</p>`
+                    }, 2000)
                     //If pokemon is still alive
                     if (newLife >0){
                         opponentLife.innerText=newLife
                     } else {
                         opponentLife.innerText=0
+                        setTimeout(function(){
+                            box.innerHTML=`<p>${opponentPokemonName} fainted!</p>`
+                            switchComputerPokemon()
+                        }, 4000)
                         fainted="true"
-                        switchComputerPokemon()
                     }
                 }
             } 
             //if attack missed
             else {
-                window.alert(`${attack.name} missed!`);
+                box.innerHTML=`<p>${pokemonName}'s ${attack.name} missed!</p>`
             }
 
             if (fainted=="false") {
                 //Execute Computer's attack
                 setTimeout(function(){
                 executeComputerAttack()
-            }, 2000)
+            }, 4000)
             }
     
         })
@@ -468,7 +500,9 @@ function executeComputerAttack(){
     //Get computer's pokemon's level
     const level= document.querySelector('#opponent-level').getAttribute('level')
     let playerLife=document.querySelector('.your-pokemon h4 span')
-    
+    let box=document.querySelector('#battle-box')
+    const pokemonName=document.querySelector('.opponent-pokemon h4').getAttribute('data-name')
+    const opponentPokemonName=document.querySelector('.your-pokemon h4').getAttribute('data-name')
     fetch(`http://localhost:3000/attacks/${randomAttack.getAttribute('attack-id')}`)
     .then(resp => resp.json())
     .then(attack=> {
@@ -477,51 +511,76 @@ function executeComputerAttack(){
             if (attack.damage=="low"){
                 let damage=Math.round(level/6)
                 let newLife=playerLife.innerText-damage
+                box.innerHTML=`<p>${pokemonName} used ${attack.name}!</p>`
+                setTimeout(function(){
+                    box.innerHTML=`<p>${attack.name} did ${damage} damage!</p>`
+                }, 2000)
                 //If pokemon is still alive
                 if (newLife >0){
                     playerLife.innerText=newLife
                 } else {
                     playerLife.innerText=0
-                    switchPlayerPokemon()
+                    setTimeout(function(){
+                        box.innerHTML=`<p>${opponentPokemonName} fainted!</p>`
+                        switchPlayerPokemon()
+                    }, 4000)
                 }
                 
             } else if (attack.damage=="medium"){
                 let damage=Math.round(level/4)
                 let newLife=playerLife.innerText-damage
+                box.innerHTML=`<p>${pokemonName} used ${attack.name}!</p>`
+                setTimeout(function(){
+                    box.innerHTML=`<p>${attack.name} did ${damage} damage!</p>`
+                }, 2000)
                 //If pokemon is still alive
                 if (newLife >0){
                     playerLife.innerText=newLife
                 } else {
                     playerLife.innerText=0
-                    switchPlayerPokemon()
+                    setTimeout(function(){
+                        box.innerHTML=`<p>${opponentPokemonName} fainted!</p>`
+                        switchPlayerPokemon()
+                    }, 4000)
                 }
             } else {
                 let damage=Math.round(level/2)
                 let newLife=playerLife.innerText-damage
+                box.innerHTML=`<p>${pokemonName} used ${attack.name}!</p>`
+                setTimeout(function(){
+                    box.innerHTML=`<p>${attack.name} did ${damage} damage!</p>`
+                }, 2000)
                 //If pokemon is still alive
                 if (newLife >0){
                     playerLife.innerText=newLife
                 } else {
                     playerLife.innerText=0
-                    switchPlayerPokemon()
+                    setTimeout(function(){
+                        box.innerHTML=`<p>${opponentPokemonName} fainted!</p>`
+                        switchPlayerPokemon()
+                    }, 4000)
                 }
             }
         } 
         //if attack missed
         else {
-            window.alert(`Opponent's ${attack.name} missed!`);
+            box.innerHTML=`<p>${pokemonName}'s ${attack.name} missed!</p>`
         }
 
     });
 }
 
 function switchComputerPokemon(){
+    setTimeout(function(){
+    let box=document.querySelector('#battle-box')
     opponentRoster.shift()
+    box.innerHTML=`Opponent switched to ${opponentRoster[0].name}`
+
     if (opponentRoster.length==0){
         youWin()
     }else{
     let div=document.querySelector('.opponent-pokemon')
-    div.innerHTML=`<h4 id='opponent-level' level= '${opponentRoster[0].level}'>lvl ${opponentRoster[0].level} ${opponentRoster[0].name}</h4><h4>Life Points: <span>${opponentRoster[0].life}</span></h4><img src=${opponentRoster[0].img}>`
+    div.innerHTML=`<h4 id='opponent-level' data-name='${opponentRoster[0].name}' level= '${opponentRoster[0].level}'>lvl ${opponentRoster[0].level} ${opponentRoster[0].name}</h4><h4>Life Points: <span>${opponentRoster[0].life}</span></h4><img src=${opponentRoster[0].img}>`
 
     fetch(`http://localhost:3000/pokemons/${opponentRoster[0].id}/attacks`)
     .then(resp => resp.json())
@@ -529,6 +588,7 @@ function switchComputerPokemon(){
         renderAttacks(json, "opponent")
     });
     }
+    }, 1500)
 
 }
 
@@ -538,24 +598,30 @@ function switchPlayerPokemon(){
         youLose()
     }
     else{
-    fetch(`http://localhost:3000/pokemons/${pokemonRoster[currentPokemonIndex].getAttribute('pokemon-id')}`)
-    .then(resp => resp.json())
-    .then(json=> {
-    let div2=document.querySelector('.your-pokemon')
-    div2.innerHTML=`<h4 id='your-level' level= '${json.level}'>lvl ${json.level} ${json.name}</h4><h4>Life Points: <span>${json.life}</span></h4><img src=${pokemonRoster[currentPokemonIndex].querySelector('img').getAttribute('src')}>`
-});
-
-    fetch(`http://localhost:3000/pokemons/${pokemonRoster[currentPokemonIndex].getAttribute('pokemon-id')}/attacks`)
-    .then(resp => resp.json())
-    .then(json=> {
-        renderAttacks(json, "player")
+    setTimeout(function(){
+        let box=document.querySelector('#battle-box')
+        fetch(`http://localhost:3000/pokemons/${pokemonRoster[currentPokemonIndex].getAttribute('pokemon-id')}`)
+        .then(resp => resp.json())
+        .then(json=> {
+        box.innerHTML=`You switched to ${json.name}`
+        let div2=document.querySelector('.your-pokemon')
+        div2.innerHTML=`<h4 id='your-level' data-name='${json.name}' level= '${json.level}'>lvl ${json.level} ${json.name}</h4><h4>Life Points: <span>${json.life}</span></h4><img src=${pokemonRoster[currentPokemonIndex].querySelector('img').getAttribute('src')}>`
     });
+    
+        fetch(`http://localhost:3000/pokemons/${pokemonRoster[currentPokemonIndex].getAttribute('pokemon-id')}/attacks`)
+        .then(resp => resp.json())
+        .then(json=> {
+            renderAttacks(json, "player")
+        });
+    }, 1500)
+   
     }
    
 
 }
 
 function youWin(){
+    setTimeout(function(){
     document.querySelector('#battle').setAttribute('class', 'hidden')
     fetch(`http://localhost:3000/trainers/${trainerId}`)
     .then(resp => resp.json())
@@ -563,9 +629,12 @@ function youWin(){
         let div=document.querySelector('#post-battle')
         div.innerHTML=`<img src=${trainer.img}> <h3>You win....this time.</h3>`
     });
+    }, 3000)
+    
 }
 
 function youLose(){
+    setTimeout(function(){
     document.querySelector('#battle').setAttribute('class', 'hidden')
     fetch(`http://localhost:3000/trainers/${trainerId}`)
     .then(resp => resp.json())
@@ -573,6 +642,7 @@ function youLose(){
         let div=document.querySelector('#post-battle')
         div.innerHTML=`<img src=${trainer.img}> <h3>Better luck next time, loser.</h3>`
     });
+    }, 3000)
 }
 
 
