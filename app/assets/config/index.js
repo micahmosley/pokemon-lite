@@ -68,7 +68,7 @@ function continueConvo(data){
         fetch(Pokemon_URL)
         .then(resp => resp.json())
         .then(json => renderPokemon(json,id));
-    }, 5000)
+    }, 8000)
     
 }
 
