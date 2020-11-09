@@ -38,10 +38,11 @@ For most millennials pokemon was a childhood phenomenon that continues to have a
   $ rails db:seed
 5. Start the server by entering: 
   $ rails s
-6. Open a second terminal window and navigate to the 'assets' folder by entering:
-  1. $ cd app 
-  2. $ cd assets 
-7. Start the game by entering:
+6. Open a second terminal window and navigate to the 'app' folder by entering:
+  $ cd app 
+7. Navigate to the 'assets' folder by entering:
+  $ cd assets  
+8. Start the game by entering:
   $ open index.html
 
 ## Features
