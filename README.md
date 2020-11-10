@@ -10,7 +10,7 @@
 * [Contact](#contact)
 
 ## Project Video
-[View demo of Pokemon-Lite](https://youtu.be/YQ_sav1GPwc)
+[View demo of Pokemon-Lite](https://www.youtube.com/watch?v=frZgNt6DBY0)
 
 ## Inspiration
 For most millennials pokemon was a childhood phenomenon that continues to have a lasting cultural impact into adulthood. We wanted to pay homage to the original pokemon video games and create a simple game that allows the user to choose pokemon and battle with them. 
